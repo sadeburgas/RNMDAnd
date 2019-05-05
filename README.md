@@ -2,8 +2,7 @@
 
 FIREBASE FIRESTORE for Android
 
-
-@img[](../<images_screenshot>./images/screenshot_1.png "Optional Title")
+![a workaround link](repo/blob/images_screenshot/images/screenshot_1.png?raw=true "Optional Title")
 
 
 * Add, edit and delete data for a Firestore database in your apps
