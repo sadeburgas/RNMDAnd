@@ -2,7 +2,7 @@
 
 FIREBASE FIRESTORE for Android
 
-![a workaround link](repo/blob/images_screenshot/images/screenshot_1.png?raw=true "Optional Title")
+![](https://github.com/sadeburgas/RNMDAnd/blob/images_screenshot/images/screenshot_1.png)
 
 
 * Add, edit and delete data for a Firestore database in your apps
