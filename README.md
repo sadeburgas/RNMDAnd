@@ -1,7 +1,9 @@
 # RNMDAnd
 
 FIREBASE FIRESTORE for Android
-![Alt text](/../<origin/images_screenshot>./images/screenshot_1.png?raw=true "First")
+
+
+@img[](../<images_screenshot>./images/screenshot_1.png "Optional Title")
 
 
 * Add, edit and delete data for a Firestore database in your apps
