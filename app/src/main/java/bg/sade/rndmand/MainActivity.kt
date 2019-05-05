@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
             }
-    }
+    } Logcat
 
     fun parseData(snapshot: QuerySnapshot) {
         thoughts.clear()
