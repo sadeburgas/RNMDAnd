@@ -1,10 +1,11 @@
-package bg.sade.rndmand
+package bg.sade.rndmand.Activities
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import bg.sade.rndmand.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 

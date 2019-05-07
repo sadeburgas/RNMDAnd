@@ -1,9 +1,13 @@
-package bg.sade.rndmand
+package bg.sade.rndmand.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import bg.sade.rndmand.Utilities.DATE_CREATED
+import bg.sade.rndmand.R
+import bg.sade.rndmand.Utilities.USERNAME
+import bg.sade.rndmand.Utilities.USERS_REF
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FieldValue

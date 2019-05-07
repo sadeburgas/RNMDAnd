@@ -1,4 +1,4 @@
-package bg.sade.rndmand
+package bg.sade.rndmand.Activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import bg.sade.rndmand.*
+import bg.sade.rndmand.Adapters.ThoughtsAdapter
+import bg.sade.rndmand.Model.Thought
+import bg.sade.rndmand.Utilities.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -15,7 +19,6 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +39,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(addThoughtIntent)
         }
 
-        thoughtsAdapter = ThoughtsAdapter(thoughts)
+        thoughtsAdapter = ThoughtsAdapter(thoughts) {thought ->
+            val commentsActivity = Intent(this, CommentsActivity::class.java)
+            commentsActivity.putExtra(DOCUMENT_KEY, thought.documentId)
+            startActivity(commentsActivity)
+        }
         thoughtListView.adapter = thoughtsAdapter
         val layoutManager = LinearLayoutManager(this)
         thoughtListView.layoutManager = layoutManager

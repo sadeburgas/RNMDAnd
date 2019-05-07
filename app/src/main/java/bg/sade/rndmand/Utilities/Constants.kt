@@ -1,7 +1,8 @@
-package bg.sade.rndmand
+package bg.sade.rndmand.Utilities
 
 const val THOUGHTS_REF = "thoughts"
 const val USERS_REF = "users"
+const val COMMENTS_REF = "comments"
 
 // Category Constants
 
@@ -19,3 +20,7 @@ const val THOUGHT_TXT = "thoughtTxt"
 const val TIMESTAMP = "timestamp"
 const val USERNAME = "username"
 const val DATE_CREATED = "dateCreated"
+const val COMMENT_TXT = "commentTxt"
+
+// Other Constants
+const val DOCUMENT_KEY = "docId"

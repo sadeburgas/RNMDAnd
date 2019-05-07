@@ -1,4 +1,4 @@
-package bg.sade.rndmand
+package bg.sade.rndmand.Model
 
 import java.util.*
 
