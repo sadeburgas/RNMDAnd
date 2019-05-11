@@ -4,15 +4,18 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import bg.sade.rndmand.Interfaces.CommentOptionsClickListener
 import bg.sade.rndmand.Model.Comment
 import bg.sade.rndmand.R
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 
-class CommentsAdapter(val comments: ArrayList<Comment>) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+class CommentsAdapter(val comments: ArrayList<Comment>, val commentOptionsListener: CommentOptionsClickListener) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.comment_list_view, p0, false)
@@ -32,9 +35,11 @@ class CommentsAdapter(val comments: ArrayList<Comment>) : RecyclerView.Adapter<C
         val username = itemView.findViewById<TextView>(R.id.commentListUsername)
         val timestamp = itemView.findViewById<TextView>(R.id.commentListTimestamp)
         val commentTxt = itemView.findViewById<TextView>(R.id.commentListCommentTxt)
+        val optionsImage = itemView.findViewById<ImageView>(R.id.commentOptionsImage)
 
         fun bindComment(comment: Comment) {
 
+            optionsImage.visibility = View.INVISIBLE
             username.text = comment.username
             commentTxt.text = comment.commentTxt
 
@@ -43,7 +48,18 @@ class CommentsAdapter(val comments: ArrayList<Comment>) : RecyclerView.Adapter<C
             val dateString = dateFormatter.format(comment.timestamp)
             timestamp.text = dateString
 
-        }
+            if (FirebaseAuth.getInstance().currentUser?.uid == comment.userId) {
+                optionsImage.visibility = View.VISIBLE
+                optionsImage.setOnClickListener {
+                    commentOptionsListener.optionMenuClicked(comment)
+                }
+            }
 
+        }
     }
+
+
+
+
+
 }

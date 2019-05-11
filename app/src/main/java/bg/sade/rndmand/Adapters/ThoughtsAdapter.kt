@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import bg.sade.rndmand.Interfaces.ThoughtOptionsClickListener
 import bg.sade.rndmand.Model.Thought
 import bg.sade.rndmand.R
 import bg.sade.rndmand.Utilities.NUM_LIKES
 import bg.sade.rndmand.Utilities.THOUGHTS_REF
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ThoughtsAdapter(val thoughts: ArrayList<Thought>,  val itemClick: (Thought) -> Unit) : RecyclerView.Adapter<ThoughtsAdapter.ViewHolder>() {
+class ThoughtsAdapter(val thoughts: ArrayList<Thought>, val thoughtOptionsClickListener: ThoughtOptionsClickListener, val itemClick: (Thought) -> Unit) : RecyclerView.Adapter<ThoughtsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.thought_list_view, p0, false)
@@ -37,6 +39,7 @@ class ThoughtsAdapter(val thoughts: ArrayList<Thought>,  val itemClick: (Thought
         val num_Likes = itemView.findViewById<TextView>(R.id.listViewNumLikesLbl)
         val likesImage = itemView.findViewById<ImageView>(R.id.listViewLikesImage)
         val numComments = itemView.findViewById<TextView>(R.id.numCommentsLbl)
+        val optionsImage = itemView.findViewById<ImageView>(R.id.thoughtsOptionImage)
 
         fun bindThought(thought: Thought){
 
@@ -44,7 +47,7 @@ class ThoughtsAdapter(val thoughts: ArrayList<Thought>,  val itemClick: (Thought
             thoughtTxt.text = thought.thoughtTxt
             num_Likes.text = thought.num_Likes.toString()
             numComments.text = thought.NumComments.toString()
-
+            optionsImage.visibility = View.INVISIBLE
 
             val dateFormatter = SimpleDateFormat("MMM d, h:mm a", Locale.getDefault())
             val dateString = dateFormatter.format(thought.timestamp)
@@ -54,6 +57,13 @@ class ThoughtsAdapter(val thoughts: ArrayList<Thought>,  val itemClick: (Thought
             likesImage.setOnClickListener {
                 FirebaseFirestore.getInstance().collection(THOUGHTS_REF).document(thought.documentId)
                         .update(NUM_LIKES, thought.num_Likes?.plus(1))
+            }
+
+            if (FirebaseAuth.getInstance().currentUser?.uid == thought.userId) {
+                optionsImage.visibility = View.VISIBLE
+                optionsImage.setOnClickListener {
+                    thoughtOptionsClickListener.thoughtOptionsMenuClicked(thought)
+                }
             }
 
         }

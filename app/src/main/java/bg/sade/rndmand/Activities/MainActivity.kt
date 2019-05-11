@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import bg.sade.rndmand.*
 import bg.sade.rndmand.Adapters.ThoughtsAdapter
+import bg.sade.rndmand.Interfaces.ThoughtOptionsClickListener
 import bg.sade.rndmand.Model.Thought
 import bg.sade.rndmand.Utilities.*
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ThoughtOptionsClickListener {
 
     var selectedCategory = FUNNY
     lateinit var thoughtsAdapter: ThoughtsAdapter
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(addThoughtIntent)
         }
 
-        thoughtsAdapter = ThoughtsAdapter(thoughts) {thought ->
+        thoughtsAdapter = ThoughtsAdapter(thoughts, this) {thought ->
             val commentsActivity = Intent(this, CommentsActivity::class.java)
             commentsActivity.putExtra(DOCUMENT_KEY, thought.documentId)
             startActivity(commentsActivity)
@@ -71,6 +72,11 @@ class MainActivity : AppCompatActivity() {
             menuItem.title = "Logout"
         }
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun thoughtOptionsMenuClicked(thought: Thought) {
+        println(thought.thoughtTxt)
+        // present the alert dialog.
     }
 
     fun updateUI() {
@@ -154,10 +160,11 @@ class MainActivity : AppCompatActivity() {
             val numLikes = data[NUM_LIKES] as? Long
             val numComments = data[NUM_COMMENTS] as? Long
             val documentId = document.id
+            val userId = data!![USER_ID] as String
 
-            val newThuoght = Thought(name, timestamp, thoughtTxt, numLikes?.toInt(),
-                    numComments?.toInt(), documentId)
-            thoughts.add(newThuoght)
+            val newThought = Thought(name, timestamp, thoughtTxt, numLikes?.toInt(),
+                    numComments?.toInt(), documentId, userId)
+            thoughts.add(newThought)
 
         }
         thoughtsAdapter.notifyDataSetChanged()

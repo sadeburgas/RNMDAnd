@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import bg.sade.rndmand.Adapters.CommentsAdapter
+import bg.sade.rndmand.Interfaces.CommentOptionsClickListener
 import bg.sade.rndmand.Model.Comment
 import bg.sade.rndmand.R
 import bg.sade.rndmand.Utilities.*
@@ -18,7 +19,7 @@ import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_comments.*
 import java.util.*
 
-class CommentsActivity : AppCompatActivity() {
+class CommentsActivity : AppCompatActivity(), CommentOptionsClickListener {
 
     lateinit var thoughtDocumentId: String
     lateinit var commentsAdapter: CommentsAdapter
@@ -30,7 +31,7 @@ class CommentsActivity : AppCompatActivity() {
         thoughtDocumentId = intent.getStringExtra(DOCUMENT_KEY)
         println(thoughtDocumentId)
 
-        commentsAdapter = CommentsAdapter(comments)
+        commentsAdapter = CommentsAdapter(comments, this)
         commentListView.adapter = commentsAdapter
         val layoutManager = LinearLayoutManager(this)
         commentListView.layoutManager = layoutManager
@@ -49,16 +50,22 @@ class CommentsActivity : AppCompatActivity() {
                             val data = document.data
                             val name = data!![USERNAME] as String
                             val timestamp = document.getDate(TIMESTAMP)
-                                    //data[TIMESTAMP] as Date
                             val commentTxt = data[COMMENT_TXT] as String
+                            val documentId = data[COMMENT_TXT] as String
+                            val userId = data[USER_ID] as String
 
-                            val newComment = Comment(name, timestamp, commentTxt)
+                            val newComment = Comment(name, timestamp, commentTxt, documentId, userId)
                             comments.add(newComment)
                         }
 
                         commentsAdapter.notifyDataSetChanged()
                     }
                 }
+    }
+
+    override fun optionMenuClicked(comment: Comment) {
+        // this is where I present alert dialog.
+        println(comment.commentTxt)
     }
 
     fun addCommentClicked(view: View) {
@@ -78,7 +85,7 @@ class CommentsActivity : AppCompatActivity() {
             data.put(COMMENT_TXT, commentTxt)
             data.put(TIMESTAMP, FieldValue.serverTimestamp())
             data.put(USERNAME, FirebaseAuth.getInstance().currentUser?.displayName.toString())
-
+            data.put(USER_ID, FirebaseAuth.getInstance().currentUser?.uid.toString())
             transaction.set(newCommentRef, data)
 
         }
