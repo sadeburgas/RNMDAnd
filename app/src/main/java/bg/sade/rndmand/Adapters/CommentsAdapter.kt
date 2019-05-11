@@ -29,7 +29,7 @@ class CommentsAdapter(val comments: ArrayList<Comment>) : RecyclerView.Adapter<C
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val username = itemView.findViewById<TextView>(R.id.commentListCommentTxt)
+        val username = itemView.findViewById<TextView>(R.id.commentListUsername)
         val timestamp = itemView.findViewById<TextView>(R.id.commentListTimestamp)
         val commentTxt = itemView.findViewById<TextView>(R.id.commentListCommentTxt)
 
